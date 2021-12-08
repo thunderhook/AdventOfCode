@@ -3,40 +3,36 @@ const fs = require('fs');
 (async function processLineByLine() {
     try {
 
-        var x = 0, y = 0
-        var lines = fs.readFileSync('day3/input/day3-input-small.txt').toString().split("\r\n")
+        var lines = fs.readFileSync('day3/input/day3-input.txt').toString().split("\r\n")
+
+        let counts
 
         lines.forEach(l => {
 
-            const positiveCounts = [], negativeCounts = []
             const bins = l.split('')
+
+            if (!counts) {
+                counts = Array(bins.length).fill().map(cell => Array(2).fill(0))
+            }
+            
             for (let i = 0; i < bins.length; i++) {
-                if (i == "1") {
-                    if (!positiveCounts[i]) {
-                        positiveCounts[i] = 0;
-                    }
-                    positiveCounts[i]++;
+                if (bins[i] == '0') {
+                    counts[i][0]++;
                 } else {
-                    if (!negativeCounts[i]) {
-                        negativeCounts[i] = 0;
-                    }
-                    negativeCounts[i]++;
+                    counts[i][1]++;
                 }
 
-                console.log(`pos ${i}: ${positiveCounts}`)
-                console.log(`neg ${i}: ${negativeCounts}`)
-                break;
-
-                results[i]
-                if (!results[i]) {
-                    results.push(i)
-                }
-                const bin = bins[i]
-                console.log(bin)
+                // console.log(`bins: ${bins}`)
+                // console.log(`counts ${i}: counts: ${counts[i]}`)
             }
         })
 
-        console.log(`x/y = ${x}/${y}, multiplied: ${x * y}`)
+        let gamma = counts.map(c => c[0] > c[1] ? "0" : "1").join('');
+        let epsilon = counts.map(c => c[0] <= c[1] ? "0" : "1").join('');
+
+        console.log(`gamma: ${gamma} = ${parseInt(gamma, 2)}`)
+        console.log(`epsilon: ${epsilon} = ${parseInt(epsilon, 2)}`)
+        console.log(`power: ${parseInt(epsilon, 2) * parseInt(gamma, 2)}`)
     } catch (err) {
         console.error(err);
     }
